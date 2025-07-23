@@ -13,8 +13,8 @@ symlink_with_backup() {
     local type="${3:-file}" # Default to file if not specified
 
     if [[ -e "$target" ]]; then
-        read -p "Backup existing $(basename "$target") to $(basename "$target").bak? [y/N] " backup_answer
-        if [[ "$backup_answer" =~ ^[Yy]$ ]]; then
+        read -p "Backup existing $(basename "$target") to $(basename "$target").bak? [Y/n] " backup_answer
+        if [[ ! "$backup_answer" =~ ^[Nn]$ ]]; then
             if [[ "$type" = "dir" ]]; then
                 cp -r "$target" "$target.bak"
             else
@@ -33,25 +33,25 @@ symlink_with_backup() {
     echo "Symlinked $(basename "$src") to $target"
 }
 
-read -p "Symlink bashrc? [y/N] " answer
-if [[ "$answer" =~ ^[Yy]$ ]]; then
-    symlink_with_backup "$DOTFILES_DIR/.bashrc" "$HOME/.bashrc"
-    symlink_with_backup "$DOTFILES_DIR/.bash_profile" "$HOME/.bash_profile"
-    symlink_with_backup "$DOTFILES_DIR/.bash_scripts" "$HOME/.bash_scripts" "dir"
+read -p "Symlink bashrc? [Y/n] " answer
+if [[ ! "$answer" =~ ^[Nn]$ ]]; then
+    symlink_with_backup "$DOTFILES_DIR/bash/.bashrc" "$HOME/.bashrc"
+    symlink_with_backup "$DOTFILES_DIR/bash/.bash_profile" "$HOME/.bash_profile"
+    symlink_with_backup "$DOTFILES_DIR/bash/.bash_scripts" "$HOME/.bash_scripts" "dir"
 fi
 
-read -p "Symlink vim configuration? [y/N] " answer
-if [[ "$answer" =~ ^[Yy]$ ]]; then
-    symlink_with_backup "$DOTFILES_DIR/.vimrc" "$HOME/.vimrc"
-    symlink_with_backup "$DOTFILES_DIR/.vim" "$HOME/.vim" "dir"
+read -p "Symlink vim configuration? [Y/n] " answer
+if [[ ! "$answer" =~ ^[Nn]$ ]]; then
+    symlink_with_backup "$DOTFILES_DIR/vim/.vimrc" "$HOME/.vimrc"
+    symlink_with_backup "$DOTFILES_DIR/vim/.vim" "$HOME/.vim" "dir"
 fi
 
-read -p "Symlink emacs configuration? [y/N] " answer
-if [[ "$answer" =~ ^[Yy]$ ]]; then
+read -p "Symlink emacs configuration? [Y/n] " answer
+if [[ ! "$answer" =~ ^[Nn]$ ]]; then
     create_symlink="true"
     if [[ ! -d "$HOME/.emacs.d" ]]; then
-        read -p ".emacs.d directory does not exist. Create it? [y/N] " create_answer
-        if [[ "$create_answer" =~ ^[Yy]$ ]]; then
+        read -p ".emacs.d directory does not exist. Create it? [Y/n] " create_answer
+        if [[ ! "$create_answer" =~ ^[Nn]$ ]]; then
             mkdir -p "$HOME/.emacs.d"
             echo "Created $HOME/.emacs.d directory"
         else
@@ -60,6 +60,6 @@ if [[ "$answer" =~ ^[Yy]$ ]]; then
         fi
     fi
     if [[ "$create_symlink" = "true" ]]; then
-        symlink_with_backup "$DOTFILES_DIR/.emacs.d/init.el" "$HOME/.emacs.d/init.el"
+        symlink_with_backup "$DOTFILES_DIR/emacs/init.el" "$HOME/.emacs.d/init.el"
     fi
 fi
