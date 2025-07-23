@@ -3,11 +3,11 @@ PS1=""
 . ~/.bash_scripts/colors.bash
 git_status(){
 	branch=$(git branch 2> /dev/null | grep '\*' | sed -e 's/* \(.*\)/\1/');
-	if [ "$branch" ] ; then
+	if [[ "$branch" ]] ; then
 		changed=$(git status -s)
 		changes="$(git status -s | wc -l)"
 		echo -n -e "\b\b";
-		if [ "$changed" ] ; then
+		if [[ "$changed" ]] ; then
 			echo -n -e "${fg_cyan_echo}${bg_red_echo}${arrow}"
 			echo -n -e "${fg_white_echo}"
 			echo -n -e "${branch} ${changes}"
