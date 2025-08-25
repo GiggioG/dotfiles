@@ -7,7 +7,7 @@ set softtabstop=4 " visual how many spc=tab
 set shiftwidth=4 " for >> and << commands
 set cursorline " convert tabs to spc
 
-" set number " line numbers
+set number " line numbers
 set relativenumber " line numbers
 set wildmenu " menu autocomplete
 set lazyredraw " redraw only when required
@@ -25,7 +25,6 @@ set splitbelow
 " nnoremap j gj
 " " same for k
 " nnoremap k gk
-
 
 " reload .vimrc with "\ s v"
 "nnoremap <leader>sv :source $MYVIMRC<CR>
