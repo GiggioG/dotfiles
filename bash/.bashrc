@@ -98,3 +98,4 @@ fi
 
 ### MY CUSTOMISATION
 . ~/.bash_scripts/prompts.bash
+. ~/.bash_scripts/path.bash
