@@ -48,18 +48,5 @@ fi
 
 read -p "Symlink emacs configuration? [Y/n] " answer
 if [[ ! "$answer" =~ ^[Nn]$ ]]; then
-    create_symlink="true"
-    if [[ ! -d "$HOME/.emacs.d" ]]; then
-        read -p ".emacs.d directory does not exist. Create it? [Y/n] " create_answer
-        if [[ ! "$create_answer" =~ ^[Nn]$ ]]; then
-            mkdir -p "$HOME/.emacs.d"
-            echo "Created $HOME/.emacs.d directory"
-        else
-            create_symlink="false"
-            echo "Skipping .emacs.d/init.el symlink as the directory .emacs.d does not exist."
-        fi
-    fi
-    if [[ "$create_symlink" = "true" ]]; then
-        symlink_with_backup "$DOTFILES_DIR/emacs/init.el" "$HOME/.emacs.d/init.el"
-    fi
+	symlink_with_backup "$DOTFILES_DIR/emacs" "$HOME/.emacs.d" "dir"
 fi
