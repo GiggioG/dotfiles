@@ -33,6 +33,7 @@ symlink_with_backup() {
     echo "Symlinked $(basename "$src") to $target"
 }
 
+echo -e "\\n\\n"
 read -p "Symlink bashrc? [Y/n] " answer
 if [[ ! "$answer" =~ ^[Nn]$ ]]; then
     symlink_with_backup "$DOTFILES_DIR/bash/.bashrc" "$HOME/.bashrc"
@@ -40,13 +41,21 @@ if [[ ! "$answer" =~ ^[Nn]$ ]]; then
     symlink_with_backup "$DOTFILES_DIR/bash/.bash_scripts" "$HOME/.bash_scripts" "dir"
 fi
 
+echo -e "\\n\\n"
 read -p "Symlink vim configuration? [Y/n] " answer
 if [[ ! "$answer" =~ ^[Nn]$ ]]; then
     symlink_with_backup "$DOTFILES_DIR/vim/.vimrc" "$HOME/.vimrc"
     symlink_with_backup "$DOTFILES_DIR/vim/.vim" "$HOME/.vim" "dir"
 fi
 
+echo -e "\\n\\n"
 read -p "Symlink emacs configuration? [Y/n] " answer
 if [[ ! "$answer" =~ ^[Nn]$ ]]; then
-	symlink_with_backup "$DOTFILES_DIR/emacs" "$HOME/.emacs.d" "dir"
+    symlink_with_backup "$DOTFILES_DIR/emacs" "$HOME/.emacs.d" "dir"
+fi
+
+echo -e "\\n\\n"
+read -p "Symlink neovim configuration? [Y/n] " answer
+if [[ ! "$answer" =~ ^[Nn]$ ]]; then
+    symlink_with_backup "$DOTFILES_DIR/neovim" "$HOME/.config/nvim" "dir"	
 fi
