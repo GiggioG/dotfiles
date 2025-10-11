@@ -1,4 +1,4 @@
-M = {
+local M = {
 	started = false, 
 	inputModified = true,
 	sourceCodeModified = true
@@ -77,12 +77,13 @@ M.start = function()
 
 	vim.api.nvim_create_autocmd("WinClosed", {
 		group = vim.api.nvim_create_augroup("runcpp_mainwin-closed", {clear = true}),
-		pattern = { tostring(M.mainWin) },
+		pattern = tostring(M.mainWin),
 		callback = function ()
 			vim.cmd("wqa")
 		end
 	})
 	M.ensureInputWin()
+	vim.api.nvim_set_current_win(M.inputWin)
 	M.started = true
 end
 

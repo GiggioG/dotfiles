@@ -43,7 +43,7 @@ vim.pack.add({
 	{ src = "https://github.com/mason-org/mason.nvim" },
 	{ src = "https://github.com/nvim-treesitter/nvim-treesitter" },
 })
-vim.lsp.enable({ "lua_ls", "rust_analyzer", "clangd" })
+vim.lsp.enable({ "lua_ls", "rust_analyzer", "clangd", "eslint-lsp" })
 vim.keymap.set('n', "<leader>bf", vim.lsp.buf.format)
 
 vim.lsp.config("lua_ls", {
@@ -62,3 +62,4 @@ require "nvim-treesitter.configs".setup({
 })
 
 require "runcpp"
+require "comp_infos"
