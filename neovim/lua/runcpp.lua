@@ -79,7 +79,8 @@ M.start = function()
 		group = vim.api.nvim_create_augroup("runcpp_mainwin-closed", {clear = true}),
 		pattern = tostring(M.mainWin),
 		callback = function ()
-			vim.cmd("wqa")
+			if M.outputBuf ~= nil then vim.api.nvim_buf_call(M.outputBuf, function() vim.cmd("wq!") end) end
+			if M.inputBuf ~= nil then vim.api.nvim_buf_call(M.inputBuf, function() vim.cmd("wq!") end) end
 		end
 	})
 	M.ensureInputWin()

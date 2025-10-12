@@ -11,9 +11,11 @@ using namespace std;
 #endif
 
 int main(){
-//    ios_base::sync_with_stdio(false);
-//    cin.tie(nullptr);
-//    cout.tie(nullptr);
+#ifndef GIGO_DEBUG
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+#endif
 
 
 
@@ -81,6 +83,7 @@ M.extractMarkdown = function()
 
 	local addLine = false
 	lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+	local hasCodeSnippets = false
 	for i, line in ipairs(lines) do
 		local trimmed = M.string_trim(line)
 		if addLine and trimmed == "```" then
@@ -92,10 +95,13 @@ M.extractMarkdown = function()
 		end
 		if trimmed == "```cpp" then
 			addLine = true
+			hasCodeSnippets = true
 		end
 	end
 
-	vim.api.nvim_buf_call(M.zapiskiCppBuf, function() vim.cmd.write({ fileLocation .. "/_zapiski.cpp", bang=true }) end)
+	if hasCodeSnippets == true then
+		vim.api.nvim_buf_call(M.zapiskiCppBuf, function() vim.cmd.write({ fileLocation .. "/_zapiski.cpp", bang=true }) end)
+	end
 end
 
 -- M.beginProb = function()
@@ -260,9 +266,9 @@ M.getArenaProblemPathName = function(id, label)
 		[573] = "Junior"
 	}
 
-	-- if PATH_NAMES[id] ~= nil then
-	-- 	return PATH_NAMES[id]
-	-- end
+	if PATH_NAMES[id] ~= nil then
+		return PATH_NAMES[id]
+	end
 	if label == "Тренировъчно състезание" then
 		return "Tren"
 	end
@@ -284,7 +290,7 @@ function M.getArenaProblemInfo(link)
 	local compId = tonumber(M.jq(path, ".[0].id"))
 	local compYear = tonumber(M.jq(prob_req, ".year"))
 	local title = M.jq(prob_req, ".title"):sub(2, -3)
-	path = M.jq(path, "[ .[] | select(.label != \"" .. tostring(compYear) .. "\")]")
+	path = M.jq(path, "[ .[] | .label=(.label | sub(\"^\\\\s*\"; \"\") | sub(\"\\\\s*$\"; \"\")) | select(.label != \"" .. tostring(compYear) .. "\")]")
 
 	local pathSimple = M.jq(path, ".[] | [.id, .label]")
 	local pathNames = {}
@@ -345,7 +351,6 @@ M.beginProb = function(call)
 	vim.api.nvim_set_current_dir(path)
 	vim.api.nvim_buf_call(probBuf, function() vim.cmd.write({ info.fileName .. ".cpp" }) end)
 	vim.cmd.edit(info.fileName .. ".cpp")
-	vim.cmd("18")
 end
 
 vim.api.nvim_create_autocmd("BufWritePost", {
