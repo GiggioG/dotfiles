@@ -45,27 +45,26 @@ vim.keymap.set('i', "№", "#")
 vim.keymap.set('i', "€", "^")
 vim.keymap.set('i', "§", "&")
 
+vim.lsp.enable({ "lua_ls", "rust_analyzer", "clangd", "eslint-lsp", "arduino-ls", "ast-grep" })
 vim.keymap.set('n', "<leader>bf", vim.lsp.buf.format)
 
--- package stuff
+vim.lsp.config("lua_ls", {
+	settings = {
+		Lua = {
+			workspace = {
+				library = vim.api.nvim_get_runtime_file("", true),
+			}
+		}
+	}
+})
 
+-- package stuff
 if (vim.pack ~= nil) then
 	vim.pack.add({
 		{ src = "https://github.com/neovim/nvim-lspconfig" },
 		{ src = "https://github.com/mason-org/mason.nvim" },
 		{ src = "https://github.com/nvim-treesitter/nvim-treesitter" },
 		{ src = "https://github.com/vyfor/cord.nvim" },
-	})
-	vim.lsp.enable({ "lua_ls", "rust_analyzer", "clangd", "eslint-lsp", "arduino-ls", "ast-grep" })
-
-	vim.lsp.config("lua_ls", {
-		settings = {
-			Lua = {
-				workspace = {
-					library = vim.api.nvim_get_runtime_file("", true),
-				}
-			}
-		}
 	})
 
 	vim.api.nvim_create_autocmd('PackChanged', {
