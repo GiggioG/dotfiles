@@ -1,5 +1,5 @@
 ######                                          ######
-### .BASHRC SECTION mostly COPPIED FROM TILDE.CLUB ###
+### .bashrc SECTION mostly COPPIED FROM TILDE.CLUB ###
 ######                                          ######
 
 # ~/.bashrc: executed by bash(1) for non-login shells.

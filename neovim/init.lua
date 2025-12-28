@@ -36,30 +36,48 @@ vim.cmd("colorscheme unokai")
 
 vim.opt.winborder = "rounded"
 
--- LSP
-
-vim.pack.add({
-	{ src = "https://github.com/neovim/nvim-lspconfig" },
-	{ src = "https://github.com/mason-org/mason.nvim" },
-	{ src = "https://github.com/nvim-treesitter/nvim-treesitter" },
-})
-vim.lsp.enable({ "lua_ls", "rust_analyzer", "clangd", "eslint-lsp" })
-vim.keymap.set('n', "<leader>bf", vim.lsp.buf.format)
-
-vim.lsp.config("lua_ls", {
-	settings = {
-		Lua = {
-			workspace = {
-				library = vim.api.nvim_get_runtime_file("", true),
-			}
-		}
-	}
-})
-
-require "mason".setup()
-require "nvim-treesitter.configs".setup({
-	highlight = { enable = true }
-})
-
 require "runcpp"
 require "comp_infos"
+
+vim.keymap.set('i', "„", "<")
+vim.keymap.set('i', "“", ">")
+vim.keymap.set('i', "№", "#")
+vim.keymap.set('i', "€", "^")
+vim.keymap.set('i', "§", "&")
+
+vim.keymap.set('n', "<leader>bf", vim.lsp.buf.format)
+
+-- package stuff
+
+if (vim.pack ~= nil) then
+	vim.pack.add({
+		{ src = "https://github.com/neovim/nvim-lspconfig" },
+		{ src = "https://github.com/mason-org/mason.nvim" },
+		{ src = "https://github.com/nvim-treesitter/nvim-treesitter" },
+		{ src = "https://github.com/vyfor/cord.nvim" },
+	})
+	vim.lsp.enable({ "lua_ls", "rust_analyzer", "clangd", "eslint-lsp", "arduino-ls", "ast-grep" })
+
+	vim.lsp.config("lua_ls", {
+		settings = {
+			Lua = {
+				workspace = {
+					library = vim.api.nvim_get_runtime_file("", true),
+				}
+			}
+		}
+	})
+
+	vim.api.nvim_create_autocmd('PackChanged', {
+	  callback = function(opts)
+		if opts.data.spec.name == 'cord.nvim' and opts.data.kind == 'update' then 
+		  vim.cmd 'Cord update'
+		end
+	  end
+	})
+
+	require "mason".setup()
+	require "nvim-treesitter.configs".setup({
+		highlight = { enable = true }
+	})
+end

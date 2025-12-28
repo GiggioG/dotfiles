@@ -282,8 +282,7 @@ end
 function M.getArenaProblemInfo(link)
 	local linkInfo = M.parseArenaProblemLink(link)
 
-	local prob_req = M.curl("https://arena.infosbg.com/api/competitions/" ..
-	linkInfo.compId .. "/problem/" .. linkInfo.probId).body
+	local prob_req = M.curl("https://arena.infosbg.com/api/competitions/" .. linkInfo.compId .. "/problem/" .. linkInfo.probId).body
 	local path_req = M.curl("https://arena.infosbg.com/api/competitions/" .. linkInfo.compId .. "/path").body
 
 	local path = M.jq(path_req, "[ .[] | select(.id != 1 and .id != 479) ]") -- Zadachi i Drugi
@@ -306,7 +305,7 @@ function M.getArenaProblemInfo(link)
 		{"link", link},
 		{"from", table.concat(pathNames, " / ")}
 	}
-	table.insert(pathNames, title)
+	table.insert(pathNames, 1, title)
 	return {
 		fileName = table.concat(pathNames, '_'),
 		probName = title,

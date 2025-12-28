@@ -1,5 +1,5 @@
 ######                                                ######
-### .BASH_PROFILE SECTION mostly COPPIED FROM TILDE.CLUB ###
+### .bash_profile SECTION mostly COPPIED FROM TILDE.CLUB ###
 ######                                                ######
 
 # ~/.profile: executed by the command interpreter for login shells.
