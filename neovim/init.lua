@@ -45,7 +45,8 @@ vim.keymap.set('i', "№", "#")
 vim.keymap.set('i', "€", "^")
 vim.keymap.set('i', "§", "&")
 
-vim.lsp.enable({ "lua_ls", "rust_analyzer", "clangd", "eslint-lsp", "arduino-ls", "ast-grep" })
+-- lsp stuff
+vim.lsp.enable({ "lua_ls", "rust_analyzer", "clangd", "eslint", "arduino_language_server", "ast_grep" })
 vim.keymap.set('n', "<leader>bf", vim.lsp.buf.format)
 
 vim.lsp.config("lua_ls", {
@@ -65,6 +66,7 @@ if (vim.pack ~= nil) then
 		{ src = "https://github.com/mason-org/mason.nvim" },
 		{ src = "https://github.com/nvim-treesitter/nvim-treesitter" },
 		{ src = "https://github.com/vyfor/cord.nvim" },
+		{ src = "https://github.com/ivanesmantovich/xkbswitch.nvim" },
 	})
 
 	vim.api.nvim_create_autocmd('PackChanged', {
@@ -79,4 +81,6 @@ if (vim.pack ~= nil) then
 	require "nvim-treesitter.configs".setup({
 		highlight = { enable = true }
 	})
+
+	require "xkbswitch".setup()
 end
