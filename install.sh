@@ -7,20 +7,32 @@
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 
+generate_backup_name() {
+	local target="$1"
+	local bakNo=1
+	local name="$target.bak"
+	while [[ -e $name ]]; do
+		bakNo=$(($bakNo + 1))
+		name="$target.bak$bakNo"
+	done
+	echo $name
+}
+
 symlink_with_backup() {
     local src="$1"
     local target="$2"
     local type="${3:-file}" # Default to file if not specified
 
     if [[ -e "$target" ]]; then
-        read -p "Backup existing $(basename "$target") to $(basename "$target").bak? [Y/n] " backup_answer
+		local bakName=$(generate_backup_name $target)
+        read -p "Backup existing $(basename "$target") to $(basename "$bakName")? [Y/n] " backup_answer
         if [[ ! "$backup_answer" =~ ^[Nn]$ ]]; then
             if [[ "$type" = "dir" ]]; then
-                cp -r "$target" "$target.bak"
+                cp -r "$target" "$bakName"
             else
-                cp "$target" "$target.bak"
+                cp "$target" "$bakName"
             fi
-            echo "Backed up existing $(basename "$target") to $(basename "$target").bak"
+            echo "Backed up existing $(basename "$target") to $(basename "$bakName")"
         fi
         if [[ "$type" = "dir" ]]; then
             rm -rf "$target"
@@ -42,6 +54,12 @@ if [[ ! "$answer" =~ ^[Nn]$ ]]; then
 fi
 
 echo -e "\\n\\n"
+read -p "Symlink neovim configuration? [Y/n] " answer
+if [[ ! "$answer" =~ ^[Nn]$ ]]; then
+    symlink_with_backup "$DOTFILES_DIR/neovim" "$HOME/.config/nvim" "dir"
+fi
+
+echo -e "\\n\\n"
 read -p "Symlink vim configuration? [Y/n] " answer
 if [[ ! "$answer" =~ ^[Nn]$ ]]; then
     symlink_with_backup "$DOTFILES_DIR/vim/.vimrc" "$HOME/.vimrc"
@@ -52,10 +70,4 @@ echo -e "\\n\\n"
 read -p "Symlink emacs configuration? [Y/n] " answer
 if [[ ! "$answer" =~ ^[Nn]$ ]]; then
     symlink_with_backup "$DOTFILES_DIR/emacs" "$HOME/.emacs.d" "dir"
-fi
-
-echo -e "\\n\\n"
-read -p "Symlink neovim configuration? [Y/n] " answer
-if [[ ! "$answer" =~ ^[Nn]$ ]]; then
-    symlink_with_backup "$DOTFILES_DIR/neovim" "$HOME/.config/nvim" "dir"	
 fi
